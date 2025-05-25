@@ -1,12 +1,23 @@
+import { useState, useEffect } from "react";
 
+function App() {
+  const [message, setMessage] = useState("loading…");
 
-function App() { 
-  console.log(import.meta.env)
+  useEffect(() => {
+    fetch("/.netlify/functions/getMessage")
+      .then((res) => res.json())
+      .then((data) => setMessage(data.message))
+      .catch((err) => {
+        console.error(err);
+        setMessage("Error fetching message");
+      });
+  }, []);
+
   return (
-    <main>
-      <h1>{import.meta.env.VITE_API || "loading..."}</h1>
+    <main className="p-4">
+      <h1>{message}</h1>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
